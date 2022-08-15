@@ -14,14 +14,32 @@ namespace SOS2EVAAutoPatcher
             {
                 if (thingDef.IsSuitableAsEva())
                 {
-                    if (thingDef.apparel.tags?.Contains("EVA") ?? false)
+                    if ((thingDef.apparel.tags?.Contains("EVA") ?? false) is false)
                     {
-                        continue;
+                        thingDef.apparel.tags ??= new List<string>();
+                        thingDef.apparel.tags.Add("EVA");
                     }
-                    thingDef.apparel.tags ??= new List<string>();
-                    thingDef.apparel.tags.Add("EVA");
                     thingDef.SetStatBaseValue(StatDefOf.Insulation_Cold, 100);
-                    Log.Message("SOS2 EVA Autopatcher patched " + thingDef.label + " from " + thingDef.modContentPack?.Name ?? "unknown mod to be usable as an EVA apparel.");
+                    if (thingDef.equippedStatOffsets is null)
+                    {
+                        thingDef.equippedStatOffsets = new List<StatModifier>();
+                    }
+                    if (thingDef.equippedStatOffsets.Exists(x => x.stat == StatDefOf.ToxicSensitivity))
+                    {
+                        var entry = thingDef.equippedStatOffsets.Find(x => x.stat == StatDefOf.ToxicSensitivity);
+                        entry.value = -1;
+                    }
+                    else
+                    {
+                        thingDef.equippedStatOffsets.Add(new StatModifier
+                        {
+                            stat = StatDefOf.ToxicSensitivity,
+                            value = -1
+                        });
+                    }
+
+                    Log.Message("SOS2 EVA Autopatcher patched " + thingDef.label + " from "
+                        + (thingDef.modContentPack?.Name ?? "unknown mod") + " to be usable as an EVA apparel.");
                 }
             }
         }
@@ -34,6 +52,19 @@ namespace SOS2EVAAutoPatcher
                 && thingDef.apparel.LastLayer == ApparelLayerDefOf.Shell)
             {
                 if (thingDef.tradeTags != null && thingDef.tradeTags.Contains("PsychicApparel"))
+                {
+                    return false;
+                }
+                bool madeOutMetallic = thingDef.costList != null || thingDef.stuffCategories != null ? false : true;
+                if (thingDef.costList != null && thingDef.costList.Exists(x => x.thingDef.stuffProps?.categories?.Any(x => x == StuffCategoryDefOf.Metallic) ?? false))
+                {
+                    madeOutMetallic = true;
+                }
+                if (thingDef.stuffCategories != null && thingDef.stuffCategories.Exists(x => x == StuffCategoryDefOf.Metallic))
+                {
+                    madeOutMetallic = true;
+                }
+                if (!madeOutMetallic)
                 {
                     return false;
                 }
