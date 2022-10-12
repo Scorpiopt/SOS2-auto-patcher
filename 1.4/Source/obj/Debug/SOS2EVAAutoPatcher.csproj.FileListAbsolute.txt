@@ -1,0 +1,4 @@
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SOS2-auto-patcher\1.4\Assemblies\SOS2EVAAutoPatcher.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SOS2-auto-patcher\1.4\Source\obj\Debug\SOS2EVAAutoPatcher.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SOS2-auto-patcher\1.4\Source\obj\Debug\SOS2EVAAutoPatcher.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SOS2-auto-patcher\1.4\Source\obj\Debug\SOS2EVAAutoPatcher.dll
